@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>你适合去哪个国家生活？</title>
+  <style>
+    :root { color-scheme: light; --ink:#203343; --muted:#647586; --line:#dce5eb; --blue:#176b88; --pale:#eaf4f6; --coral:#f7a782; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; font-family:system-ui,-apple-system,"Microsoft YaHei","PingFang SC",sans-serif; color:var(--ink); background:radial-gradient(circle at 10% 5%,#d7edf0 0,transparent 30%),radial-gradient(circle at 90% 85%,#fbe8dc 0,transparent 30%),#f7fafb; }
+    button { font:inherit; cursor:pointer; }
+    .shell { width:min(960px,calc(100% - 40px)); margin:0 auto; padding:42px 0 64px; }
+    .top { display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:28px; }
+    .brand { display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.03em; }
+    .brand-mark { display:grid; place-items:center; width:38px; height:38px; border-radius:12px; background:var(--blue); color:white; font-size:22px; }
+    .eyebrow { font-size:12px; font-weight:800; letter-spacing:.14em; color:var(--blue); text-transform:uppercase; }
+    .card { background:rgba(255,255,255,.94); border:1px solid var(--line); border-radius:24px; box-shadow:0 20px 60px rgba(35,75,92,.08); padding:clamp(24px,5vw,52px); }
+    .hero { display:grid; grid-template-columns:1.35fr .65fr; gap:25px; align-items:center; min-height:420px; }
+    h1 { font-size:clamp(35px,5vw,56px); letter-spacing:-.055em; line-height:1.15; margin:14px 0 18px; }
+    h2 { font-size:clamp(24px,3vw,32px); line-height:1.35; margin:10px 0 12px; }
+    h3 { font-size:18px; margin:0 0 11px; }
+    p { line-height:1.75; }
+    .lead { color:var(--muted); max-width:590px; margin-bottom:28px; }
+    .hero-art { width:100%; aspect-ratio:1; display:grid; place-items:center; border-radius:50%; background:radial-gradient(circle at 35% 30%,#ffffff 0 12%,#a9d7dc 13% 40%,#5aa6b0 41% 60%,#2e8391 61%); box-shadow:inset -15px -20px 28px #176b8850,0 22px 34px #1d71802a; font-size:clamp(70px,11vw,130px); transform:rotate(-13deg); }
+    .button { border:0; border-radius:13px; background:var(--blue); color:#fff; padding:13px 22px; font-weight:750; box-shadow:0 7px 18px #176b8830; }
+    .button:hover:not(:disabled) { background:#105b75; }
+    .button:disabled { opacity:.45; cursor:not-allowed; box-shadow:none; }
+    .button.secondary { background:#fff; color:var(--ink); border:1px solid var(--line); box-shadow:none; }
+    .button.secondary:hover { background:#f2f7f8; }
+    .micro { font-size:13px; color:var(--muted); margin-top:18px; }
+    .progress-head { display:flex; justify-content:space-between; gap:12px; color:var(--muted); font-size:13px; font-weight:700; }
+    .progress { height:8px; border-radius:20px; background:#e9f0f3; margin:11px 0 31px; overflow:hidden; }
+    .progress > div { height:100%; width:0; border-radius:20px; background:linear-gradient(90deg,var(--blue),#76bcc2); transition:width .25s; }
+    .question-note { color:var(--muted); margin:0 0 20px; }
+    .choices { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .choice { text-align:left; background:#fff; color:var(--ink); border:1.5px solid var(--line); border-radius:14px; padding:17px 18px; min-height:78px; transition:.15s; line-height:1.5; }
+    .choice:hover { border-color:#77aeb9; background:#f6fbfc; transform:translateY(-1px); }
+    .choice.selected { border-color:var(--blue); background:var(--pale); box-shadow:inset 0 0 0 1px var(--blue); }
+    .choice small { display:block; color:var(--muted); margin-top:4px; font-size:12px; }
+    .actions { display:flex; justify-content:space-between; gap:12px; margin-top:32px; }
+    .result-head { display:flex; gap:16px; align-items:center; }
+    .flag { width:58px; height:58px; border-radius:17px; display:grid; place-items:center; background:var(--pale); font-size:35px; flex:none; }
+    .result-title { margin:2px 0 0; }
+    .result-intro { color:var(--muted); margin:17px 0 25px; }
+    .pill { display:inline-block; background:var(--pale); color:var(--blue); font-size:12px; font-weight:800; padding:5px 10px; border-radius:30px; }
+    .grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .info { border:1px solid var(--line); border-radius:17px; padding:20px; background:#fff; }
+    .info p { margin:7px 0 0; color:var(--muted); font-size:14px; }
+    .info ul { padding-left:20px; margin:8px 0 0; line-height:1.7; color:#405667; }
+    .info li + li { margin-top:6px; }
+    .other { margin-top:28px; }
+    .other-list { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .other-item { display:flex; align-items:center; gap:12px; padding:15px 17px; border:1px solid var(--line); border-radius:14px; background:#fff; }
+    .other-item strong { display:block; }
+    .other-item small { color:var(--muted); }
+    .result-actions { margin-top:28px; display:flex; gap:10px; flex-wrap:wrap; }
+    .footer { text-align:center; color:var(--muted); font-size:12px; margin-top:22px; }
+    @media(max-width:700px) { .shell{width:min(100% - 24px,960px);padding-top:20px}.hero{grid-template-columns:1fr;min-height:0}.hero-art{display:none}.choices,.grid,.other-list{grid-template-columns:1fr}.top{margin-bottom:16px}.card{border-radius:20px}.choice{min-height:0} }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="top"><div class="brand"><span class="brand-mark">✦</span> 生活目的地实验室</div><span class="eyebrow">一个轻量小测试</span></div>
+    <div id="app" aria-live="polite"></div>
+    <p class="footer">结果是生活偏好匹配，不代表签证资格、就业机会或实际生活成本保证。</p>
+  </main>
+  <script>
+    // 所有资料和逻辑都在这个文件里，双击即可运行。数值 0～4 表示该维度从低到高。
+    const countries = [
+      {name:'日本',flag:'🇯🇵',tag:'便利与秩序',traits:{cost:1,climate:2,pace:3,career:3,english:1,services:4,social:1,nature:2,distance:0,city:4},note:'公共交通与日常服务方便；日语能力、职场文化和大城市住房成本值得先调查。',jobs:['tech','professional','creative']},
+      {name:'德国',flag:'🇩🇪',tag:'稳定的专业发展',traits:{cost:2,climate:3,pace:2,career:3,english:2,services:4,social:2,nature:2,distance:3,city:2},note:'适合重视职业技能与公共服务的人；德语、资格认可、税费和住房搜索需提前准备。',jobs:['tech','professional','study']},
+      {name:'荷兰',flag:'🇳🇱',tag:'国际化的紧凑生活',traits:{cost:1,climate:3,pace:3,career:4,english:4,services:4,social:3,nature:2,distance:3,city:3},note:'英语使用较方便，通勤友好；住房紧张和生活成本是重要门槛。',jobs:['tech','professional','creative']},
+      {name:'加拿大',flag:'🇨🇦',tag:'多元与户外空间',traits:{cost:1,climate:4,pace:2,career:3,english:4,services:3,social:2,nature:4,distance:4,city:2},note:'城市选择和户外空间多；气候差异大，租房、医疗等待及移民路径应按地区核查。',jobs:['tech','professional','study']},
+      {name:'澳大利亚',flag:'🇦🇺',tag:'阳光与工作平衡',traits:{cost:1,climate:1,pace:2,career:3,english:4,services:3,social:3,nature:4,distance:3,city:2},note:'英语环境和户外活动有吸引力；大城市租金、行业准入和签证条件要单独核查。',jobs:['professional','study','creative']},
+      {name:'新加坡',flag:'🇸🇬',tag:'高效率的城市生活',traits:{cost:0,climate:0,pace:4,career:4,english:4,services:3,social:3,nature:1,distance:1,city:4},note:'英语工作环境和城市效率突出；气候炎热、节奏快，住房开销和工作准证是关键。',jobs:['tech','professional']},
+      {name:'西班牙',flag:'🇪🇸',tag:'热闹与慢节奏',traits:{cost:3,climate:1,pace:1,career:1,english:1,services:3,social:4,nature:3,distance:3,city:2},note:'适合喜欢阳光与社交的人；当地就业和西班牙语能力会明显影响体验。',jobs:['remote','creative','study']},
+      {name:'葡萄牙',flag:'🇵🇹',tag:'海边的从容日常',traits:{cost:3,climate:1,pace:1,career:1,english:2,services:3,social:3,nature:3,distance:3,city:1},note:'生活节奏温和；热门城市房租上涨，收入来源和居留规定需先确认。',jobs:['remote','creative']},
+      {name:'新西兰',flag:'🇳🇿',tag:'自然与留白',traits:{cost:1,climate:2,pace:1,career:2,english:4,services:3,social:2,nature:4,distance:4,city:1},note:'山海资源丰富、节奏较慢；岗位规模较小，交通与住房预算要算清。',jobs:['professional','remote','study']},
+      {name:'瑞典',flag:'🇸🇪',tag:'安静与公共服务',traits:{cost:1,climate:4,pace:2,career:3,english:3,services:4,social:1,nature:4,distance:4,city:2},note:'重视公共服务和自然的人可能喜欢；漫长冬季、社交融入和瑞典语仍需考虑。',jobs:['tech','professional','study']},
+      {name:'爱尔兰',flag:'🇮🇪',tag:'英语与欧洲机会',traits:{cost:0,climate:3,pace:2,career:4,english:4,services:3,social:3,nature:3,distance:4,city:2},note:'英语环境和一些国际企业岗位有吸引力；住房紧张、天气多雨，应确认实际岗位。',jobs:['tech','professional','study']},
+      {name:'法国',flag:'🇫🇷',tag:'文化与城市生活',traits:{cost:1,climate:2,pace:2,career:3,english:1,services:4,social:4,nature:2,distance:3,city:3},note:'文化活动和公共服务丰富；法语、行政流程和大城市住房成本是现实课题。',jobs:['creative','professional','study']}
+    ];
+
+    const labels = {
+      cost:'生活预算',climate:'气候偏好',pace:'生活节奏',career:'职业机会',english:'英语便利度',
+      services:'公共服务',social:'社交氛围',nature:'自然空间',distance:'与东亚的距离',city:'城市规模'
+    };
+
+    // value 是希望的 0～4 档；weight 越大，这道题在匹配中越重要。
+    const questions = [
+      {id:'budget',title:'你的住房和日常预算，更接近哪种想法？',hint:'想的是当地收入或可支配预算，不用换算成具体币种。',dimension:'cost',weight:3,options:[['tight','尽量省钱，房租别把我吃掉',4],['careful','能接受中等开销，但要算账',3],['flexible','便利更重要，贵一点可以',1],['high','预算比较宽松，想住得顺手',0]]},
+      {id:'climate',title:'什么天气能让你长期保持好心情？',dimension:'climate',weight:2,options:[['warm','喜欢暖和，冬天最好只在照片里',0],['mild','偏爱温和，四季别太极端',2],['cool','喜欢凉爽，阴雨也还行',3],['cold','雪和长冬天，我可以认真考虑',4]]},
+      {id:'pace',title:'你想要怎样的日常节奏？',dimension:'pace',weight:2,options:[['slow','慢一点，周末最好像周末',1],['balanced','工作生活都要有位置',2],['fast','效率高、选择多，我不怕忙',4]]},
+      {id:'work',title:'搬去新国家后，你对职业机会有多看重？',dimension:'career',weight:3,options:[['essential','很重要，需要较多本地岗位',4],['important','重要，但也看生活质量',3],['some','已有工作或收入来源，可慢慢找',1],['little','暂时以学习、休息或生活为主',0]]},
+      {id:'language',title:'语言这关，你希望怎么过？',dimension:'english',weight:3,options:[['english','最好英语能处理大部分工作和日常',4],['some','英语先上场，我愿意再学当地语言',3],['learn','愿意认真学当地语言',1],['challenge','语言挑战？先让我点开词典',0]]},
+      {id:'services',title:'公共交通、医疗和办事体验对你有多重要？',dimension:'services',weight:2,options:[['very','很重要，生活少折腾一点',4],['medium','重要，但能接受一些不便',3],['low','不是首要条件，我适应力不错',1]]},
+      {id:'social',title:'理想的社交生活是什么样？',dimension:'social',weight:1.5,options:[['quiet','安静、边界感强，偶尔见朋友',1],['middle','独处和聚会各占一半',2],['lively','街头热闹，认识新朋友更好',4]]},
+      {id:'nature',title:'空闲时你更想走进哪里？',dimension:'nature',weight:1.5,options:[['urban','咖啡馆、展览和城市街区',1],['both','城市便利与公园山水都想要',2],['outdoor','海边、徒步、露营，越近越好',4]]},
+      {id:'distance',title:'与东亚家人朋友之间的距离，你怎么看？',dimension:'distance',weight:1.5,options:[['near','希望飞行和时差都相对省心',0],['middle','远一点可以，保持联系就好',2],['far','距离不是主要障碍',4]]},
+      {id:'city',title:'你倾向哪种居住环境？',dimension:'city',weight:1.5,options:[['small','小城市或郊区，留点空间',1],['medium','中等城市，够用就好',2],['big','大城市，机会与热闹都多',4]]},
+      {id:'budgetTight',after:'budget',when:a=>['tight','careful'].includes(a.budget),title:'如果低预算和理想城市冲突，你会怎么选？',hint:'这道追问会细化你的住房取舍。',options:[['smaller','换到较小城市，空间和预算优先',null,{city:1,cost:4}],['share','可以合租，想保留大城市机会',null,{city:4,career:3}],['flex','愿意多花一点，先求生活方便',null,{cost:2,services:4}]]},
+      {id:'budgetHigh',after:'budget',when:a=>['flexible','high'].includes(a.budget),title:'愿意为哪件事多付一些钱？',options:[['job','更密集的工作机会',null,{career:4,city:4}],['service','更便捷的服务与通勤',null,{services:4,city:3}],['space','更宽敞的住处和自然',null,{nature:4,city:1}]]},
+      {id:'workFocused',after:'work',when:a=>['essential','important'].includes(a.work),title:'你最可能依靠哪类机会？',hint:'这只做轻度加分，不等于当地真的有适合你的职位。',options:[['tech','科技与数字产品',null,null,'tech'],['professional','工程、医疗、教育等专业岗位',null,null,'professional'],['creative','设计、内容、艺术或文化行业',null,null,'creative'],['study','继续学习，再找下一步',null,null,'study']]},
+      {id:'workFlexible',after:'work',when:a=>['some','little'].includes(a.work),title:'你的收入或计划比较灵活，最想换来什么？',options:[['remote','适合远程工作和慢生活',null,{pace:1,nature:3},'remote'],['explore','先体验城市、文化与社交',null,{social:4,city:3}],['reset','找个安静地方调整节奏',null,{pace:1,social:1,nature:4}]]},
+      {id:'langEnglish',after:'language',when:a=>['english','some'].includes(a.language),title:'英语环境对你是硬条件吗？',options:[['must','是，刚落地就要能独立办事',null,{english:4}],['mostly','最好方便，但我可以学习',null,{english:3}],['workonly','工作用英语即可，日常慢慢适应',null,{english:2}]]},
+      {id:'langLearn',after:'language',when:a=>['learn','challenge'].includes(a.language),title:'你愿意给新语言多少学习时间？',options:[['long','愿意长期投入，融入当地生活',null,{english:0}],['some','愿意学基础，再慢慢提高',null,{english:2}],['fun','先靠手势、词典和勇气试试',null,{english:3}]]}
+    ];
+
+    const app = document.getElementById('app');
+    const answers = {};
+    let stage = 'home';
+    let index = 0;
+
+    function activeQuestions() {
+      const base = questions.filter(q => !q.after);
+      const active = [...base];
+      for (const q of questions.filter(q => q.after)) {
+        if (q.when(answers)) active.splice(active.findIndex(item => item.id === q.after) + 1, 0, q);
+      }
+      return active;
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+    }
+
+    function renderHome() {
+      stage = 'home';
+      app.innerHTML = `<section class="card hero"><div><span class="eyebrow">Find your place</span><h1>你适合去哪个<br>国家生活？</h1><p class="lead">用几分钟回答生活偏好题，看看哪些地方与你更合拍。不同答案会触发不同追问，最后给出理由、备选国家和现实提醒。</p><button class="button" id="start">开始测试 →</button><p class="micro">约 13 题 · 12 个国家结果 · 无需登录</p></div><div class="hero-art" aria-hidden="true">🌍</div></section>`;
+      document.getElementById('start').onclick = () => { stage = 'quiz'; index = 0; renderQuestion(); };
+    }
+
+    function renderQuestion() {
+      const active = activeQuestions();
+      index = Math.min(index, active.length - 1);
+      const q = active[index];
+      const selected = answers[q.id];
+      app.innerHTML = `<section class="card"><div class="progress-head"><span>生活偏好测试</span><span>${index + 1} / ${active.length}</span></div><div class="progress"><div style="width:${(index / active.length) * 100}%"></div></div><span class="eyebrow">问题 ${String(index + 1).padStart(2,'0')}</span><h2>${escapeHtml(q.title)}</h2><p class="question-note">${escapeHtml(q.hint || '选最接近真实想法的一项即可，没有标准答案。')}</p><div class="choices" role="group" aria-label="答题选项">${q.options.map(option => `<button class="choice ${selected === option[0] ? 'selected' : ''}" data-value="${option[0]}" aria-pressed="${selected === option[0]}">${escapeHtml(option[1])}</button>`).join('')}</div><div class="actions"><button class="button secondary" id="back">← ${index ? '上一题' : '返回首页'}</button><button class="button" id="next" ${selected ? '' : 'disabled'}>${index === active.length - 1 ? '查看结果 →' : '下一题 →'}</button></div></section>`;
+      app.querySelectorAll('.choice').forEach(button => button.onclick = () => {
+        answers[q.id] = button.dataset.value;
+        // 修改分支答案时，清理不再适用的追问答案。
+        for (const branch of questions.filter(item => item.when && !item.when(answers))) delete answers[branch.id];
+        renderQuestion();
+      });
+      document.getElementById('back').onclick = () => { if (index === 0) renderHome(); else { index--; renderQuestion(); } };
+      document.getElementById('next').onclick = () => {
+        if (!answers[q.id]) return;
+        if (index === activeQuestions().length - 1) renderResults();
+        else { index++; renderQuestion(); }
+      };
+    }
+
+    function buildPreferences() {
+      const chosen = [];
+      const jobChoices = [];
+      for (const q of activeQuestions()) {
+        const option = q.options.find(item => item[0] === answers[q.id]);
+        if (!option) continue;
+        if (q.dimension) chosen.push({dimension:q.dimension,value:option[2],weight:q.weight});
+        if (option[3]) for (const [dimension,value] of Object.entries(option[3])) chosen.push({dimension,value,weight:1});
+        if (option[4]) jobChoices.push(option[4]);
+      }
+      return {chosen,jobChoices};
+    }
+
+    function rankCountries() {
+      const {chosen,jobChoices} = buildPreferences();
+      return countries.map(country => {
+        let score = 0, maximum = 0;
+        const matches = [];
+        for (const preference of chosen) {
+          const difference = Math.abs(country.traits[preference.dimension] - preference.value);
+          const points = preference.weight * (4 - difference);
+          score += points;
+          maximum += preference.weight * 4;
+          if (difference <= 1 && preference.weight >= 1.5) matches.push({dimension:preference.dimension,weight:preference.weight,difference});
+        }
+        for (const job of jobChoices) { maximum += 5; if (country.jobs.includes(job)) score += 5; }
+        return {...country,score,percent:Math.round(score / maximum * 100),matches};
+      }).sort((a,b) => b.score - a.score || a.name.localeCompare(b.name,'zh-CN'));
+    }
+
+    function renderResults() {
+      stage = 'result';
+      const ranked = rankCountries();
+      const winner = ranked[0];
+      const reasons = winner.matches.sort((a,b) => b.weight - a.weight || a.difference - b.difference).slice(0,3).map(item => labels[item.dimension]);
+      const reasonText = reasons.length ? reasons.join('、') : '整体生活偏好';
+      app.innerHTML = `<section class="card"><span class="eyebrow">你的生活目的地报告</span><div class="result-head"><div class="flag">${winner.flag}</div><div><span class="pill">最接近你的偏好 · ${winner.percent}%</span><h1 class="result-title">${winner.name}</h1></div></div><p class="result-intro">${escapeHtml(winner.tag)}。你在「${escapeHtml(reasonText)}」方面的选择，与这里的生活画像比较接近。</p><div class="grid"><div class="info"><h3>为什么推荐</h3><ul>${reasons.map(reason => `<li>你重视的「${escapeHtml(reason)}」与${escapeHtml(winner.name)}的特点较接近。</li>`).join('') || '<li>多项偏好综合得分较高。</li>'}<li>这是相对匹配分数，不是移居成功概率。</li></ul></div><div class="info"><h3>落地前要核查</h3><p>${escapeHtml(winner.note)}</p><p>再结合你的国籍、行业、收入和家庭情况，查看官方签证信息与具体城市数据。</p></div></div><div class="other"><h3>也值得看看</h3><div class="other-list">${ranked.slice(1,5).map(country => `<div class="other-item"><span style="font-size:27px">${country.flag}</span><div><strong>${escapeHtml(country.name)} · ${country.percent}%</strong><small>${escapeHtml(country.tag)}</small></div></div>`).join('')}</div></div><div class="result-actions"><button class="button" id="restart">重新测试</button><button class="button secondary" id="review">回看答案</button></div></section>`;
+      document.getElementById('restart').onclick = () => { for (const key of Object.keys(answers)) delete answers[key]; index = 0; renderHome(); };
+      document.getElementById('review').onclick = () => { index = 0; stage = 'quiz'; renderQuestion(); };
+    }
+
+    renderHome();
+  </script>
+</body>
+</html>
