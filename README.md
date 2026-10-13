@@ -10,12 +10,13 @@ GitHub Pages：https://xunnian0721-code.github.io/country-life-quiz/
 
 ## 本地运行
 
-双击 `index.html`，用浏览器打开即可。
+本地项目目录：`E:\codex\country-life-quiz`。双击其中的 `index.html`，用浏览器打开即可。
 
 ## 更新 GitHub Pages
 
-1. 修改并保存 `index.html`。
-2. 打开 GitHub 仓库 `xunnian0721-code/country-life-quiz`，上传修改后的 `index.html` 并提交。
-3. 等待 GitHub Pages 发布完成，再打开上面的 GitHub Pages 网址检查。
+1. 修改并保存本目录中的 `index.html`。
+2. 打开 GitHub Desktop，选择 `country-life-quiz`，在 **Changes** 中查看修改。
+3. 填写简短的提交说明，点击 **Commit to main**，再点击 **Push origin**。
+4. 等待 GitHub Pages 发布完成，再打开上面的 GitHub Pages 网址检查。
 
-修改本地文件不会自动更新线上页面，必须把修改提交到 GitHub 仓库。
+修改本地文件不会自动更新线上页面，必须提交并推送到 GitHub。
